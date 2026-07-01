@@ -521,6 +521,9 @@ function HomePage() {
                   src={img}
                   alt={`Galeria Leal ${i + 1}`}
                   loading="lazy"
+                  decoding="async"
+                  width={600}
+                  height={600}
                   className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
                 />
               </div>
