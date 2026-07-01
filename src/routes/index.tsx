@@ -99,7 +99,7 @@ const brinquedos = [
     desc: "Energia, movimento e muita diversão com segurança.",
   },
   {
-    nome: "Air Hockey",
+    nome: "Air Game",
     img: airHockeyImg,
     desc: "Uma opção divertida para crianças maiores, jovens e adultos.",
   },
