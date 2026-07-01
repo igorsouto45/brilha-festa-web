@@ -16,18 +16,13 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h1 className="text-7xl font-bold text-brand-blue">404</h1>
+        <h2 className="mt-4 text-xl font-semibold">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          A página que você procura não existe ou foi movida.
         </p>
         <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+          <Link to="/" className="btn-primary">Voltar ao início</Link>
         </div>
       </div>
     </div>
@@ -44,11 +39,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
+        <h1 className="text-xl font-semibold">Esta página não carregou</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          Algo deu errado. Tente novamente ou volte ao início.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -56,16 +49,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="btn-primary"
           >
-            Try again
+            Tentar novamente
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
+          <a href="/" className="btn-outline">Ir ao início</a>
         </div>
       </div>
     </div>
@@ -77,21 +65,60 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Leal Locação de Brinquedos | Aluguel de Brinquedos para Festas" },
+      {
+        name: "description",
+        content:
+          "Aluguel de brinquedos para festas infantis, aniversários, eventos e confraternizações. Pula-pula, tobogã inflável, cama elástica, air hockey, futebol de mesa e piscina de bolinhas. Faça sua reserva pelo WhatsApp.",
+      },
+      { name: "author", content: "Leal Locação de Brinquedos" },
+      { name: "theme-color", content: "#0057B8" },
+      {
+        name: "keywords",
+        content:
+          "locação de brinquedos, aluguel de brinquedos, aluguel de pula-pula, aluguel de cama elástica, brinquedos para festa infantil, piscina de bolinhas, tobogã inflável, festa infantil, air hockey, futebol de mesa",
+      },
+      { property: "og:title", content: "Leal Locação de Brinquedos | Aluguel de Brinquedos para Festas" },
+      {
+        property: "og:description",
+        content:
+          "A alegria da sua festa começa aqui! Alugue pula-pula, tobogã, cama elástica, piscina de bolinhas e muito mais. Reserve pelo WhatsApp.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Leal Locação de Brinquedos" },
+      { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Leal Locação de Brinquedos" },
+      {
+        name: "twitter:description",
+        content: "Aluguel de brinquedos para festas infantis, aniversários e eventos.",
+      },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "Leal Locação de Brinquedos",
+          description:
+            "Aluguel de brinquedos para festas infantis, aniversários, eventos e confraternizações.",
+          telephone: "+5521996178608",
+          url: "https://www.leallocacaodebrinquedos.com.br",
+          sameAs: ["https://instagram.com/leallocacaodebrinquedos"],
+          areaServed: "Rio de Janeiro",
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -102,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
@@ -119,7 +146,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );
