@@ -367,10 +367,11 @@ function HomePage() {
                 <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                   <img
                     src={b.img}
-                    alt={b.nome}
+                    alt={`${b.nome} para alugar em festas infantis`}
                     loading="lazy"
-                    width={1024}
-                    height={768}
+                    decoding="async"
+                    width={900}
+                    height={675}
                     className="h-full w-full object-contain p-4 transition-transform duration-300 hover:scale-105"
                   />
                 </div>
