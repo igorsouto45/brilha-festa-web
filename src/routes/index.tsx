@@ -304,9 +304,11 @@ function HomePage() {
             <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-br from-brand-yellow via-brand-red to-brand-blue opacity-90" aria-hidden="true" />
             <img
               src={heroFesta}
-              alt="Festa infantil com pula-pula, piscina de bolinhas e balões coloridos"
+              alt="Festa infantil com pula-pula colorido e crianças brincando ao ar livre"
               width={1280}
               height={960}
+              fetchPriority="high"
+              decoding="async"
               className="relative aspect-[4/3] w-full rounded-[2rem] object-cover shadow-2xl"
             />
             <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-white px-5 py-3 shadow-xl md:block">
