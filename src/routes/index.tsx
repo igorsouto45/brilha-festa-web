@@ -689,7 +689,11 @@ function HomePage() {
             <img
               src={logoAsset.url}
               alt="Leal Locação de Brinquedos"
-              className="h-20 w-auto rounded-2xl bg-white p-2"
+              loading="lazy"
+              decoding="async"
+              width={160}
+              height={160}
+              className="h-40 w-auto rounded-2xl bg-white p-2"
             />
             <p className="mt-4 font-display text-xl">Leal Locação de Brinquedos</p>
             <p className="mt-1 text-white/80">A alegria da sua festa começa aqui!</p>
