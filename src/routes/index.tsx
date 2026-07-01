@@ -172,28 +172,7 @@ const beneficios = [
   "Reserva simples e prática",
 ];
 
-const faq = [
-  {
-    q: "Quais tipos de brinquedos a Leal aluga?",
-    a: "Alugamos brinquedos como pula-pula, tobogã inflável, cama elástica, air hockey, futebol de mesa, piscina de bolinhas e outras opções infantis.",
-  },
-  {
-    q: "Como faço para reservar?",
-    a: "Você pode clicar em qualquer botão de WhatsApp no site e falar diretamente com a equipe da Leal para consultar disponibilidade, valores e detalhes.",
-  },
-  {
-    q: "Atendem quais tipos de eventos?",
-    a: "Atendemos aniversários, eventos escolares, festas em condomínios, igrejas, confraternizações e eventos familiares.",
-  },
-  {
-    q: "Preciso reservar com antecedência?",
-    a: "Sim. O ideal é reservar com antecedência para garantir a disponibilidade dos brinquedos na data desejada.",
-  },
-  {
-    q: "Posso tirar dúvidas pelo Instagram?",
-    a: "Sim. Você também pode acompanhar novidades e falar com a Leal pelo Instagram @leallocacaodebrinquedos.",
-  },
-];
+const faq = faqItems;
 
 function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
