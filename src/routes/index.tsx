@@ -2,17 +2,63 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import logoAsset from "@/assets/leal-logo.asset.json";
-import heroFesta from "@/assets/hero-festa.jpg";
-import pulaPulaImg from "@/assets/pula-pula.jpg";
-import tobogaImg from "@/assets/toboga.jpg";
-import camaElasticaImg from "@/assets/cama-elastica.jpg";
-import airHockeyImg from "@/assets/air-hockey.jpg";
-import futebolMesaImg from "@/assets/futebol-mesa.jpg";
-import piscinaBolinhasImg from "@/assets/piscina-bolinhas.jpg";
-import brinquedosInfantisImg from "@/assets/brinquedos-infantis.jpg";
+import heroFesta from "@/assets/hero-festa.webp";
+import pulaPulaImg from "@/assets/pula-pula.webp";
+import tobogaImg from "@/assets/toboga.webp";
+import camaElasticaImg from "@/assets/cama-elastica.webp";
+import airHockeyImg from "@/assets/air-hockey.webp";
+import futebolMesaImg from "@/assets/futebol-mesa.webp";
+import piscinaBolinhasImg from "@/assets/piscina-bolinhas.webp";
+import brinquedosInfantisImg from "@/assets/brinquedos-infantis.webp";
+
+const faqItems = [
+  {
+    q: "Quais tipos de brinquedos a Leal aluga?",
+    a: "Alugamos brinquedos como pula-pula, tobogã inflável, cama elástica, air game, futebol de mesa, piscina de bolinhas e outras opções infantis.",
+  },
+  {
+    q: "Como faço para reservar?",
+    a: "Você pode clicar em qualquer botão de WhatsApp no site e falar diretamente com a equipe da Leal para consultar disponibilidade, valores e detalhes.",
+  },
+  {
+    q: "Atendem quais tipos de eventos?",
+    a: "Atendemos aniversários, eventos escolares, festas em condomínios, igrejas, confraternizações e eventos familiares.",
+  },
+  {
+    q: "Preciso reservar com antecedência?",
+    a: "Sim. O ideal é reservar com antecedência para garantir a disponibilidade dos brinquedos na data desejada.",
+  },
+  {
+    q: "Posso tirar dúvidas pelo Instagram?",
+    a: "Sim. Você também pode acompanhar novidades e falar com a Leal pelo Instagram @leallocacaodebrinquedos.",
+  },
+];
 
 export const Route = createFileRoute("/")({
   component: HomePage,
+  head: () => ({
+    links: [
+      { rel: "preload", as: "image", href: heroFesta, fetchpriority: "high" } as unknown as {
+        rel: string;
+        as: string;
+        href: string;
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+    ],
+  }),
 });
 
 const WA_MSG =
@@ -53,7 +99,7 @@ const brinquedos = [
     desc: "Energia, movimento e muita diversão com segurança.",
   },
   {
-    nome: "Air Hockey",
+    nome: "Air Game",
     img: airHockeyImg,
     desc: "Uma opção divertida para crianças maiores, jovens e adultos.",
   },
@@ -126,28 +172,7 @@ const beneficios = [
   "Reserva simples e prática",
 ];
 
-const faq = [
-  {
-    q: "Quais tipos de brinquedos a Leal aluga?",
-    a: "Alugamos brinquedos como pula-pula, tobogã inflável, cama elástica, air hockey, futebol de mesa, piscina de bolinhas e outras opções infantis.",
-  },
-  {
-    q: "Como faço para reservar?",
-    a: "Você pode clicar em qualquer botão de WhatsApp no site e falar diretamente com a equipe da Leal para consultar disponibilidade, valores e detalhes.",
-  },
-  {
-    q: "Atendem quais tipos de eventos?",
-    a: "Atendemos aniversários, eventos escolares, festas em condomínios, igrejas, confraternizações e eventos familiares.",
-  },
-  {
-    q: "Preciso reservar com antecedência?",
-    a: "Sim. O ideal é reservar com antecedência para garantir a disponibilidade dos brinquedos na data desejada.",
-  },
-  {
-    q: "Posso tirar dúvidas pelo Instagram?",
-    a: "Sim. Você também pode acompanhar novidades e falar com a Leal pelo Instagram @leallocacaodebrinquedos.",
-  },
-];
+const faq = faqItems;
 
 function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -177,7 +202,13 @@ function HomePage() {
       <header className="sticky top-0 z-40 border-b-4 border-brand-yellow bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
           <a href="#inicio" className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="Leal Locação de Brinquedos" className="h-14 w-auto md:h-16" />
+            <img
+              src={logoAsset.url}
+              alt="Leal Locação de Brinquedos"
+              width={128}
+              height={128}
+              className="h-28 w-auto md:h-32"
+            />
           </a>
           <nav className="hidden items-center gap-6 lg:flex">
             {nav.map((n) => (
@@ -273,9 +304,11 @@ function HomePage() {
             <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-br from-brand-yellow via-brand-red to-brand-blue opacity-90" aria-hidden="true" />
             <img
               src={heroFesta}
-              alt="Festa infantil com pula-pula, piscina de bolinhas e balões coloridos"
+              alt="Festa infantil com pula-pula colorido e crianças brincando ao ar livre"
               width={1280}
               height={960}
+              fetchPriority="high"
+              decoding="async"
               className="relative aspect-[4/3] w-full rounded-[2rem] object-cover shadow-2xl"
             />
             <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-white px-5 py-3 shadow-xl md:block">
@@ -334,10 +367,11 @@ function HomePage() {
                 <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                   <img
                     src={b.img}
-                    alt={b.nome}
+                    alt={`${b.nome} para alugar em festas infantis`}
                     loading="lazy"
-                    width={1024}
-                    height={768}
+                    decoding="async"
+                    width={900}
+                    height={675}
                     className="h-full w-full object-contain p-4 transition-transform duration-300 hover:scale-105"
                   />
                 </div>
@@ -488,6 +522,9 @@ function HomePage() {
                   src={img}
                   alt={`Galeria Leal ${i + 1}`}
                   loading="lazy"
+                  decoding="async"
+                  width={600}
+                  height={600}
                   className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
                 />
               </div>
@@ -652,7 +689,11 @@ function HomePage() {
             <img
               src={logoAsset.url}
               alt="Leal Locação de Brinquedos"
-              className="h-20 w-auto rounded-2xl bg-white p-2"
+              loading="lazy"
+              decoding="async"
+              width={160}
+              height={160}
+              className="h-40 w-auto rounded-2xl bg-white p-2"
             />
             <p className="mt-4 font-display text-xl">Leal Locação de Brinquedos</p>
             <p className="mt-1 text-white/80">A alegria da sua festa começa aqui!</p>
