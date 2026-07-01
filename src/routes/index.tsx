@@ -2,17 +2,63 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import logoAsset from "@/assets/leal-logo.asset.json";
-import heroFesta from "@/assets/hero-festa.jpg";
-import pulaPulaImg from "@/assets/pula-pula.jpg";
-import tobogaImg from "@/assets/toboga.jpg";
-import camaElasticaImg from "@/assets/cama-elastica.jpg";
-import airHockeyImg from "@/assets/air-hockey.jpg";
-import futebolMesaImg from "@/assets/futebol-mesa.jpg";
-import piscinaBolinhasImg from "@/assets/piscina-bolinhas.jpg";
-import brinquedosInfantisImg from "@/assets/brinquedos-infantis.jpg";
+import heroFesta from "@/assets/hero-festa.webp";
+import pulaPulaImg from "@/assets/pula-pula.webp";
+import tobogaImg from "@/assets/toboga.webp";
+import camaElasticaImg from "@/assets/cama-elastica.webp";
+import airHockeyImg from "@/assets/air-hockey.webp";
+import futebolMesaImg from "@/assets/futebol-mesa.webp";
+import piscinaBolinhasImg from "@/assets/piscina-bolinhas.webp";
+import brinquedosInfantisImg from "@/assets/brinquedos-infantis.webp";
+
+const faqItems = [
+  {
+    q: "Quais tipos de brinquedos a Leal aluga?",
+    a: "Alugamos brinquedos como pula-pula, tobogã inflável, cama elástica, air game, futebol de mesa, piscina de bolinhas e outras opções infantis.",
+  },
+  {
+    q: "Como faço para reservar?",
+    a: "Você pode clicar em qualquer botão de WhatsApp no site e falar diretamente com a equipe da Leal para consultar disponibilidade, valores e detalhes.",
+  },
+  {
+    q: "Atendem quais tipos de eventos?",
+    a: "Atendemos aniversários, eventos escolares, festas em condomínios, igrejas, confraternizações e eventos familiares.",
+  },
+  {
+    q: "Preciso reservar com antecedência?",
+    a: "Sim. O ideal é reservar com antecedência para garantir a disponibilidade dos brinquedos na data desejada.",
+  },
+  {
+    q: "Posso tirar dúvidas pelo Instagram?",
+    a: "Sim. Você também pode acompanhar novidades e falar com a Leal pelo Instagram @leallocacaodebrinquedos.",
+  },
+];
 
 export const Route = createFileRoute("/")({
   component: HomePage,
+  head: () => ({
+    links: [
+      { rel: "preload", as: "image", href: heroFesta, fetchpriority: "high" } as unknown as {
+        rel: string;
+        as: string;
+        href: string;
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+    ],
+  }),
 });
 
 const WA_MSG =
