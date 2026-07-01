@@ -88,11 +88,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Leal Locação de Brinquedos" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Leal Locação de Brinquedos" },
+      { name: "twitter:title", content: "Leal Locação de Brinquedos | Aluguel de Brinquedos para Festas" },
       {
         name: "twitter:description",
         content: "Aluguel de brinquedos para festas infantis, aniversários e eventos.",
       },
+      { name: "description", content: "Leal Fiesta Fun is a vibrant, responsive website for toy rentals, facilitating party planning and bookings." },
+      { property: "og:description", content: "Leal Fiesta Fun is a vibrant, responsive website for toy rentals, facilitating party planning and bookings." },
+      { name: "twitter:description", content: "Leal Fiesta Fun is a vibrant, responsive website for toy rentals, facilitating party planning and bookings." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2c828d4a-c480-4a00-8502-7e0c472bf967/id-preview-9b1fac46--595c1e4e-547e-4f97-9fa6-c1e8fe59c86b.lovable.app-1782931564463.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2c828d4a-c480-4a00-8502-7e0c472bf967/id-preview-9b1fac46--595c1e4e-547e-4f97-9fa6-c1e8fe59c86b.lovable.app-1782931564463.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
