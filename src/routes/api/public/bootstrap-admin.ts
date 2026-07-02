@@ -63,7 +63,7 @@ export const Route = createFileRoute("/api/public/bootstrap-admin")({
 
         const { error: roleErr } = await supabaseAdmin
           .from("user_roles")
-          .insert({ user_id: userId, role: "admin" });
+          .insert({ user_id: userId as string, role: "admin" });
         if (roleErr && !roleErr.message.includes("duplicate")) {
           return new Response(JSON.stringify({ error: roleErr.message }), { status: 500 });
         }
