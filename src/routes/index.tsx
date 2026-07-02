@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 
 import logoAsset from "@/assets/leal-logo.asset.json";
@@ -10,29 +10,10 @@ import airHockeyImg from "@/assets/air-hockey.webp";
 import futebolMesaImg from "@/assets/futebol-mesa.webp";
 import piscinaBolinhasImg from "@/assets/piscina-bolinhas.webp";
 import brinquedosInfantisImg from "@/assets/brinquedos-infantis.webp";
+import { useSiteContent } from "@/lib/use-site-content";
+import { defaultBrinquedos, defaultFaq, defaultGaleria, brinquedoImages } from "@/lib/site-content";
 
-const faqItems = [
-  {
-    q: "Quais tipos de brinquedos a Leal aluga?",
-    a: "Alugamos brinquedos como pula-pula, tobogã inflável, cama elástica, air game, futebol de mesa, piscina de bolinhas e outras opções infantis.",
-  },
-  {
-    q: "Como faço para reservar?",
-    a: "Você pode clicar em qualquer botão de WhatsApp no site e falar diretamente com a equipe da Leal para consultar disponibilidade, valores e detalhes.",
-  },
-  {
-    q: "Atendem quais tipos de eventos?",
-    a: "Atendemos aniversários, eventos escolares, festas em condomínios, igrejas, confraternizações e eventos familiares.",
-  },
-  {
-    q: "Preciso reservar com antecedência?",
-    a: "Sim. O ideal é reservar com antecedência para garantir a disponibilidade dos brinquedos na data desejada.",
-  },
-  {
-    q: "Posso tirar dúvidas pelo Instagram?",
-    a: "Sim. Você também pode acompanhar novidades e falar com a Leal pelo Instagram @leallocacaodebrinquedos.",
-  },
-];
+const faqItems = defaultFaq;
 
 export const Route = createFileRoute("/")({
   component: HomePage,
