@@ -65,22 +65,11 @@ function LoginForm({ notAdmin }: { notAdmin: boolean }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [triedBootstrap, setTriedBootstrap] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    let res = await supabase.auth.signInWithPassword({ email, password });
-    if (res.error && !triedBootstrap) {
-      // Try to bootstrap admin on first attempt
-      setTriedBootstrap(true);
-      try {
-        await fetch("/api/public/bootstrap-admin", { method: "POST" });
-        res = await supabase.auth.signInWithPassword({ email, password });
-      } catch {
-        // ignore
-      }
-    }
+    const res = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (res.error) {
       toast.error("Credenciais inválidas");
