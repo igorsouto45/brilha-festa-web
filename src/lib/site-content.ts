@@ -5,10 +5,11 @@ import airHockeyImg from "@/assets/air-hockey.webp";
 import futebolMesaImg from "@/assets/futebol-mesa.webp";
 import piscinaBolinhasImg from "@/assets/piscina-bolinhas.webp";
 import brinquedosInfantisImg from "@/assets/brinquedos-infantis.webp";
+import heroFesta from "@/assets/hero-festa.webp";
 
-export type BrinquedoItem = { nome: string; desc: string };
+export type BrinquedoItem = { nome: string; desc: string; img?: string };
 export type FaqItem = { q: string; a: string };
-export type GaleriaContent = { title: string; subtitle: string };
+export type GaleriaContent = { title: string; subtitle: string; images?: string[] };
 
 export const defaultBrinquedos: BrinquedoItem[] = [
   { nome: "Pula-pula", desc: "O clássico que não pode faltar em uma festa infantil. Diversão do começo ao fim." },
@@ -28,6 +29,17 @@ export const brinquedoImages = [
   futebolMesaImg,
   piscinaBolinhasImg,
   brinquedosInfantisImg,
+];
+
+export const defaultGaleriaImages = [
+  pulaPulaImg,
+  camaElasticaImg,
+  piscinaBolinhasImg,
+  tobogaImg,
+  airHockeyImg,
+  futebolMesaImg,
+  brinquedosInfantisImg,
+  heroFesta,
 ];
 
 export const defaultGaleria: GaleriaContent = {

@@ -11,7 +11,7 @@ import futebolMesaImg from "@/assets/futebol-mesa.webp";
 import piscinaBolinhasImg from "@/assets/piscina-bolinhas.webp";
 import brinquedosInfantisImg from "@/assets/brinquedos-infantis.webp";
 import { useSiteContent } from "@/lib/use-site-content";
-import { defaultBrinquedos, defaultFaq, defaultGaleria, brinquedoImages } from "@/lib/site-content";
+import { defaultBrinquedos, defaultFaq, defaultGaleria, brinquedoImages, defaultGaleriaImages } from "@/lib/site-content";
 
 const faqItems = defaultFaq;
 
@@ -121,7 +121,7 @@ function HomePage() {
   const brinquedos = brinquedosData.map((b, i) => ({
     nome: b.nome,
     desc: b.desc,
-    img: brinquedoImages[i] ?? brinquedoImages[0],
+    img: b.img || brinquedoImages[i] || brinquedoImages[0],
   }));
   const faq = content?.faq ?? defaultFaq;
   const galeria = content?.galeria ?? defaultGaleria;
@@ -443,7 +443,7 @@ function HomePage() {
           {galeria.subtitle && <p className="mt-3 text-foreground/70">{galeria.subtitle}</p>}
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[pulaPulaImg, camaElasticaImg, piscinaBolinhasImg, tobogaImg, airHockeyImg, futebolMesaImg, brinquedosInfantisImg, heroFesta].map(
+          {(galeria.images && galeria.images.length > 0 ? galeria.images : defaultGaleriaImages).map(
             (img, i) => (
               <div
                 key={i}
