@@ -660,8 +660,14 @@ function HomePage() {
           </div>
         </div>
         <div className="border-t border-white/15">
-          <p className="mx-auto max-w-7xl px-4 py-5 text-center text-sm text-white/70 md:px-6">
-            © 2026 Leal Locação de Brinquedos. Todos os direitos reservados.
+          <p className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-5 text-center text-sm text-white/70 md:px-6">
+            <span>© 2026 Leal Locação de Brinquedos. Todos os direitos reservados.</span>
+            <Link
+              to="/admin"
+              aria-label=" "
+              title=""
+              className="inline-block h-2 w-2 rounded-full bg-white/20 hover:bg-white/60"
+            />
           </p>
         </div>
       </footer>
