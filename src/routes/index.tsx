@@ -11,7 +11,7 @@ import futebolMesaImg from "@/assets/futebol-mesa.webp";
 import piscinaBolinhasImg from "@/assets/piscina-bolinhas.webp";
 import brinquedosInfantisImg from "@/assets/brinquedos-infantis.webp";
 import { useSiteContent } from "@/lib/use-site-content";
-import { defaultBrinquedos, defaultFaq, defaultGaleria, brinquedoImages } from "@/lib/site-content";
+import { defaultBrinquedos, defaultFaq, defaultGaleria, brinquedoImages, defaultGaleriaImages } from "@/lib/site-content";
 
 const faqItems = defaultFaq;
 
