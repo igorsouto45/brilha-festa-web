@@ -221,12 +221,17 @@ function AdminEditor({ onSignOut }: { onSignOut: () => void }) {
     })();
   }, []);
 
+  const queryClient = useQueryClient();
+
   async function save(key: string, data: unknown) {
     setSaving(key);
     const { error } = await supabase.from("site_content").upsert({ section_key: key, data: data as never });
     setSaving(null);
     if (error) toast.error("Erro ao salvar: " + error.message);
-    else toast.success("Salvo!");
+    else {
+      await queryClient.invalidateQueries({ queryKey: ["site_content"] });
+      toast.success("Salvo!");
+    }
   }
 
   async function signOut() {
