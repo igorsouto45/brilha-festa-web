@@ -121,7 +121,7 @@ function HomePage() {
   const brinquedos = brinquedosData.map((b, i) => ({
     nome: b.nome,
     desc: b.desc,
-    img: brinquedoImages[i] ?? brinquedoImages[0],
+    img: b.img || brinquedoImages[i] || brinquedoImages[0],
   }));
   const faq = content?.faq ?? defaultFaq;
   const galeria = content?.galeria ?? defaultGaleria;
