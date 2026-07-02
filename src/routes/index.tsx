@@ -63,44 +63,6 @@ const nav = [
   { href: "#contato", label: "Contato" },
 ];
 
-const brinquedos = [
-  {
-    nome: "Pula-pula",
-    img: pulaPulaImg,
-    desc: "O clássico que não pode faltar em uma festa infantil. Diversão do começo ao fim.",
-  },
-  {
-    nome: "Tobogã Inflável",
-    img: tobogaImg,
-    desc: "Grande, colorido e perfeito para deixar a criançada empolgada.",
-  },
-  {
-    nome: "Cama Elástica",
-    img: camaElasticaImg,
-    desc: "Energia, movimento e muita diversão com segurança.",
-  },
-  {
-    nome: "Air Game",
-    img: airHockeyImg,
-    desc: "Uma opção divertida para crianças maiores, jovens e adultos.",
-  },
-  {
-    nome: "Futebol de Mesa",
-    img: futebolMesaImg,
-    desc: "Competição saudável e diversão para todas as idades.",
-  },
-  {
-    nome: "Piscina de Bolinhas",
-    img: piscinaBolinhasImg,
-    desc: "Perfeita para os pequenos brincarem com conforto e alegria.",
-  },
-  {
-    nome: "Brinquedos Infantis",
-    img: brinquedosInfantisImg,
-    desc: "Opções variadas para complementar sua festa e encantar as crianças.",
-  },
-];
-
 const eventos = [
   { icon: "🎂", label: "Aniversários infantis" },
   { icon: "🏢", label: "Festas em condomínio" },
@@ -111,30 +73,10 @@ const eventos = [
 ];
 
 const destaques = [
-  {
-    icon: "🎉",
-    color: "var(--brand-red)",
-    title: "Diversão garantida",
-    text: "Brinquedos que deixam qualquer festa mais animada.",
-  },
-  {
-    icon: "🛡️",
-    color: "var(--brand-blue)",
-    title: "Segurança em primeiro lugar",
-    text: "Equipamentos pensados para crianças brincarem com tranquilidade.",
-  },
-  {
-    icon: "🎈",
-    color: "var(--brand-yellow)",
-    title: "Ideal para eventos",
-    text: "Aniversários, escolas, igrejas, condomínios e confraternizações.",
-  },
-  {
-    icon: "💬",
-    color: "var(--brand-green)",
-    title: "Atendimento rápido",
-    text: "Faça sua reserva de forma simples pelo WhatsApp.",
-  },
+  { icon: "🎉", color: "var(--brand-red)", title: "Diversão garantida", text: "Brinquedos que deixam qualquer festa mais animada." },
+  { icon: "🛡️", color: "var(--brand-blue)", title: "Segurança em primeiro lugar", text: "Equipamentos pensados para crianças brincarem com tranquilidade." },
+  { icon: "🎈", color: "var(--brand-yellow)", title: "Ideal para eventos", text: "Aniversários, escolas, igrejas, condomínios e confraternizações." },
+  { icon: "💬", color: "var(--brand-green)", title: "Atendimento rápido", text: "Faça sua reserva de forma simples pelo WhatsApp." },
 ];
 
 const passos = [
@@ -152,8 +94,6 @@ const beneficios = [
   "Visual alegre que valoriza o evento",
   "Reserva simples e prática",
 ];
-
-const faq = faqItems;
 
 function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
