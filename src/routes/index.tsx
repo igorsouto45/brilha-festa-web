@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 
 import logoAsset from "@/assets/leal-logo.asset.json";
@@ -10,29 +10,10 @@ import airHockeyImg from "@/assets/air-hockey.webp";
 import futebolMesaImg from "@/assets/futebol-mesa.webp";
 import piscinaBolinhasImg from "@/assets/piscina-bolinhas.webp";
 import brinquedosInfantisImg from "@/assets/brinquedos-infantis.webp";
+import { useSiteContent } from "@/lib/use-site-content";
+import { defaultBrinquedos, defaultFaq, defaultGaleria, brinquedoImages } from "@/lib/site-content";
 
-const faqItems = [
-  {
-    q: "Quais tipos de brinquedos a Leal aluga?",
-    a: "Alugamos brinquedos como pula-pula, tobogã inflável, cama elástica, air game, futebol de mesa, piscina de bolinhas e outras opções infantis.",
-  },
-  {
-    q: "Como faço para reservar?",
-    a: "Você pode clicar em qualquer botão de WhatsApp no site e falar diretamente com a equipe da Leal para consultar disponibilidade, valores e detalhes.",
-  },
-  {
-    q: "Atendem quais tipos de eventos?",
-    a: "Atendemos aniversários, eventos escolares, festas em condomínios, igrejas, confraternizações e eventos familiares.",
-  },
-  {
-    q: "Preciso reservar com antecedência?",
-    a: "Sim. O ideal é reservar com antecedência para garantir a disponibilidade dos brinquedos na data desejada.",
-  },
-  {
-    q: "Posso tirar dúvidas pelo Instagram?",
-    a: "Sim. Você também pode acompanhar novidades e falar com a Leal pelo Instagram @leallocacaodebrinquedos.",
-  },
-];
+const faqItems = defaultFaq;
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -82,44 +63,6 @@ const nav = [
   { href: "#contato", label: "Contato" },
 ];
 
-const brinquedos = [
-  {
-    nome: "Pula-pula",
-    img: pulaPulaImg,
-    desc: "O clássico que não pode faltar em uma festa infantil. Diversão do começo ao fim.",
-  },
-  {
-    nome: "Tobogã Inflável",
-    img: tobogaImg,
-    desc: "Grande, colorido e perfeito para deixar a criançada empolgada.",
-  },
-  {
-    nome: "Cama Elástica",
-    img: camaElasticaImg,
-    desc: "Energia, movimento e muita diversão com segurança.",
-  },
-  {
-    nome: "Air Game",
-    img: airHockeyImg,
-    desc: "Uma opção divertida para crianças maiores, jovens e adultos.",
-  },
-  {
-    nome: "Futebol de Mesa",
-    img: futebolMesaImg,
-    desc: "Competição saudável e diversão para todas as idades.",
-  },
-  {
-    nome: "Piscina de Bolinhas",
-    img: piscinaBolinhasImg,
-    desc: "Perfeita para os pequenos brincarem com conforto e alegria.",
-  },
-  {
-    nome: "Brinquedos Infantis",
-    img: brinquedosInfantisImg,
-    desc: "Opções variadas para complementar sua festa e encantar as crianças.",
-  },
-];
-
 const eventos = [
   { icon: "🎂", label: "Aniversários infantis" },
   { icon: "🏢", label: "Festas em condomínio" },
@@ -130,30 +73,10 @@ const eventos = [
 ];
 
 const destaques = [
-  {
-    icon: "🎉",
-    color: "var(--brand-red)",
-    title: "Diversão garantida",
-    text: "Brinquedos que deixam qualquer festa mais animada.",
-  },
-  {
-    icon: "🛡️",
-    color: "var(--brand-blue)",
-    title: "Segurança em primeiro lugar",
-    text: "Equipamentos pensados para crianças brincarem com tranquilidade.",
-  },
-  {
-    icon: "🎈",
-    color: "var(--brand-yellow)",
-    title: "Ideal para eventos",
-    text: "Aniversários, escolas, igrejas, condomínios e confraternizações.",
-  },
-  {
-    icon: "💬",
-    color: "var(--brand-green)",
-    title: "Atendimento rápido",
-    text: "Faça sua reserva de forma simples pelo WhatsApp.",
-  },
+  { icon: "🎉", color: "var(--brand-red)", title: "Diversão garantida", text: "Brinquedos que deixam qualquer festa mais animada." },
+  { icon: "🛡️", color: "var(--brand-blue)", title: "Segurança em primeiro lugar", text: "Equipamentos pensados para crianças brincarem com tranquilidade." },
+  { icon: "🎈", color: "var(--brand-yellow)", title: "Ideal para eventos", text: "Aniversários, escolas, igrejas, condomínios e confraternizações." },
+  { icon: "💬", color: "var(--brand-green)", title: "Atendimento rápido", text: "Faça sua reserva de forma simples pelo WhatsApp." },
 ];
 
 const passos = [
@@ -171,8 +94,6 @@ const beneficios = [
   "Visual alegre que valoriza o evento",
   "Reserva simples e prática",
 ];
-
-const faq = faqItems;
 
 function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -195,6 +116,15 @@ function InstagramIcon({ className = "h-5 w-5" }: { className?: string }) {
 function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const { data: content } = useSiteContent();
+  const brinquedosData = content?.brinquedos ?? defaultBrinquedos;
+  const brinquedos = brinquedosData.map((b, i) => ({
+    nome: b.nome,
+    desc: b.desc,
+    img: brinquedoImages[i] ?? brinquedoImages[0],
+  }));
+  const faq = content?.faq ?? defaultFaq;
+  const galeria = content?.galeria ?? defaultGaleria;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -509,7 +439,8 @@ function HomePage() {
           <span className="inline-block rounded-full bg-brand-yellow/30 px-4 py-1 text-sm font-bold text-brand-blue-dark">
             Galeria
           </span>
-          <h2 className="mt-3 font-display text-3xl text-brand-blue-dark md:text-5xl">Veja nossos brinquedos</h2>
+          <h2 className="mt-3 font-display text-3xl text-brand-blue-dark md:text-5xl">{galeria.title}</h2>
+          {galeria.subtitle && <p className="mt-3 text-foreground/70">{galeria.subtitle}</p>}
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[pulaPulaImg, camaElasticaImg, piscinaBolinhasImg, tobogaImg, airHockeyImg, futebolMesaImg, brinquedosInfantisImg, heroFesta].map(
@@ -729,8 +660,14 @@ function HomePage() {
           </div>
         </div>
         <div className="border-t border-white/15">
-          <p className="mx-auto max-w-7xl px-4 py-5 text-center text-sm text-white/70 md:px-6">
-            © 2026 Leal Locação de Brinquedos. Todos os direitos reservados.
+          <p className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 py-5 text-center text-sm text-white/70 md:px-6">
+            <span>© 2026 Leal Locação de Brinquedos. Todos os direitos reservados.</span>
+            <Link
+              to="/admin"
+              aria-label=" "
+              title=""
+              className="inline-block h-2 w-2 rounded-full bg-white/20 hover:bg-white/60"
+            />
           </p>
         </div>
       </footer>
