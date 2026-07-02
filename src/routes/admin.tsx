@@ -114,6 +114,91 @@ function LoginForm({ notAdmin }: { notAdmin: boolean }) {
   );
 }
 
+const SIGNED_URL_TTL = 60 * 60 * 24 * 365 * 10; // 10 anos
+
+async function uploadImage(file: File): Promise<string> {
+  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const { error: upErr } = await supabase.storage
+    .from("site-images")
+    .upload(path, file, { cacheControl: "31536000", upsert: false });
+  if (upErr) throw upErr;
+  const { data, error } = await supabase.storage
+    .from("site-images")
+    .createSignedUrl(path, SIGNED_URL_TTL);
+  if (error || !data) throw error ?? new Error("signed url failed");
+  return data.signedUrl;
+}
+
+function ImagePicker({
+  value,
+  fallback,
+  onChange,
+  label = "Imagem",
+}: {
+  value?: string;
+  fallback?: string;
+  onChange: (url: string) => void;
+  label?: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const preview = value || fallback;
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const url = await uploadImage(file);
+      onChange(url);
+      toast.success("Imagem enviada!");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Erro ao enviar";
+      toast.error(msg);
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <Label>{label}</Label>
+      <div className="flex items-center gap-3">
+        {preview && (
+          <img
+            src={preview}
+            alt=""
+            className="h-20 w-20 rounded-md object-cover ring-1 ring-border"
+          />
+        )}
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFile}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+        >
+          {uploading ? "Enviando…" : value ? "Trocar imagem" : "Enviar imagem"}
+        </Button>
+        {value && (
+          <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>
+            Restaurar padrão
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AdminEditor({ onSignOut }: { onSignOut: () => void }) {
   const [brinquedos, setBrinquedos] = useState<BrinquedoItem[]>(defaultBrinquedos);
   const [galeria, setGaleria] = useState<GaleriaContent>(defaultGaleria);
@@ -128,7 +213,7 @@ function AdminEditor({ onSignOut }: { onSignOut: () => void }) {
       const b = map.get(CONTENT_KEYS.brinquedos) as BrinquedoItem[] | undefined;
       const g = map.get(CONTENT_KEYS.galeria) as GaleriaContent | undefined;
       const f = map.get(CONTENT_KEYS.faq) as FaqItem[] | undefined;
-      if (b && b.length === defaultBrinquedos.length) setBrinquedos(b);
+      if (b && b.length > 0) setBrinquedos(b);
       if (g) setGaleria(g);
       if (f) setFaq(f);
       setLoading(false);
@@ -150,6 +235,8 @@ function AdminEditor({ onSignOut }: { onSignOut: () => void }) {
 
   if (loading) return <div className="p-10 text-center text-muted-foreground">Carregando conteúdo…</div>;
 
+  const galeriaImgs = galeria.images ?? [];
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
@@ -169,33 +256,67 @@ function AdminEditor({ onSignOut }: { onSignOut: () => void }) {
         </CardHeader>
         <CardContent className="space-y-6">
           {brinquedos.map((b, i) => (
-            <div key={i} className="space-y-2 rounded-lg border p-4">
-              <Label>Nome #{i + 1}</Label>
-              <Input
-                value={b.nome}
-                onChange={(e) => {
+            <div key={i} className="space-y-3 rounded-lg border p-4">
+              <div className="flex items-center justify-between">
+                <Label>Brinquedo #{i + 1}</Label>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setBrinquedos(brinquedos.filter((_, j) => j !== i))}
+                >
+                  Remover
+                </Button>
+              </div>
+              <ImagePicker
+                value={b.img}
+                fallback={brinquedoImages[i]}
+                onChange={(url) => {
                   const next = [...brinquedos];
-                  next[i] = { ...next[i], nome: e.target.value };
+                  next[i] = { ...next[i], img: url };
                   setBrinquedos(next);
                 }}
+                label="Foto"
               />
-              <Label>Descrição</Label>
-              <Textarea
-                value={b.desc}
-                onChange={(e) => {
-                  const next = [...brinquedos];
-                  next[i] = { ...next[i], desc: e.target.value };
-                  setBrinquedos(next);
-                }}
-              />
+              <div>
+                <Label>Nome</Label>
+                <Input
+                  value={b.nome}
+                  onChange={(e) => {
+                    const next = [...brinquedos];
+                    next[i] = { ...next[i], nome: e.target.value };
+                    setBrinquedos(next);
+                  }}
+                />
+              </div>
+              <div>
+                <Label>Descrição</Label>
+                <Textarea
+                  value={b.desc}
+                  onChange={(e) => {
+                    const next = [...brinquedos];
+                    next[i] = { ...next[i], desc: e.target.value };
+                    setBrinquedos(next);
+                  }}
+                />
+              </div>
             </div>
           ))}
-          <Button
-            onClick={() => save(CONTENT_KEYS.brinquedos, brinquedos)}
-            disabled={saving === CONTENT_KEYS.brinquedos}
-          >
-            {saving === CONTENT_KEYS.brinquedos ? "Salvando…" : "Salvar brinquedos"}
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              onClick={() =>
+                setBrinquedos([...brinquedos, { nome: "Novo brinquedo", desc: "", img: "" }])
+              }
+            >
+              + Adicionar brinquedo
+            </Button>
+            <Button
+              onClick={() => save(CONTENT_KEYS.brinquedos, brinquedos)}
+              disabled={saving === CONTENT_KEYS.brinquedos}
+            >
+              {saving === CONTENT_KEYS.brinquedos ? "Salvando…" : "Salvar brinquedos"}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -216,6 +337,45 @@ function AdminEditor({ onSignOut }: { onSignOut: () => void }) {
               onChange={(e) => setGaleria({ ...galeria, subtitle: e.target.value })}
             />
           </div>
+
+          <div className="space-y-3">
+            <Label>Fotos da galeria</Label>
+            <p className="text-xs text-muted-foreground">
+              Se nenhuma foto for adicionada, as imagens padrão do site serão exibidas.
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {galeriaImgs.map((url, i) => (
+                <div key={i} className="flex items-center gap-3 rounded-lg border p-3">
+                  <img src={url} alt="" className="h-16 w-16 rounded object-cover ring-1 ring-border" />
+                  <div className="flex flex-1 flex-col gap-1 text-sm">
+                    <span className="font-medium">Foto #{i + 1}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="self-start"
+                      onClick={() =>
+                        setGaleria({
+                          ...galeria,
+                          images: galeriaImgs.filter((_, j) => j !== i),
+                        })
+                      }
+                    >
+                      Remover
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <ImagePicker
+              fallback={galeriaImgs.length === 0 ? defaultGaleriaImages[0] : undefined}
+              onChange={(url) => {
+                if (!url) return;
+                setGaleria({ ...galeria, images: [...galeriaImgs, url] });
+              }}
+              label="Adicionar nova foto"
+            />
+          </div>
+
           <Button
             onClick={() => save(CONTENT_KEYS.galeria, galeria)}
             disabled={saving === CONTENT_KEYS.galeria}
@@ -224,6 +384,7 @@ function AdminEditor({ onSignOut }: { onSignOut: () => void }) {
           </Button>
         </CardContent>
       </Card>
+
 
       {/* Tudo o que você precisa saber (FAQ) */}
       <Card className="mb-8">
