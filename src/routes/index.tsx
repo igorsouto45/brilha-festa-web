@@ -116,8 +116,27 @@ function InstagramIcon({ className = "h-5 w-5" }: { className?: string }) {
 function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const { data: content } = useSiteContent();
+  const brinquedosData = content?.brinquedos ?? defaultBrinquedos;
+  const brinquedos = brinquedosData.map((b, i) => ({
+    nome: b.nome,
+    desc: b.desc,
+    img: brinquedoImages[i] ?? brinquedoImages[0],
+  }));
+  const faq = content?.faq ?? defaultFaq;
+  const galeria = content?.galeria ?? defaultGaleria;
 
   return (
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Header */}
+      <header className="sticky top-0 z-40 border-b-4 border-brand-yellow bg-white/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
+          <a href="#inicio" className="flex items-center gap-2">
+            <img
+              src={logoAsset.url}
+              alt="Leal Locação de Brinquedos"
+              width={128}
+              height={128}
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="sticky top-0 z-40 border-b-4 border-brand-yellow bg-white/95 backdrop-blur">
