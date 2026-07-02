@@ -439,7 +439,8 @@ function HomePage() {
           <span className="inline-block rounded-full bg-brand-yellow/30 px-4 py-1 text-sm font-bold text-brand-blue-dark">
             Galeria
           </span>
-          <h2 className="mt-3 font-display text-3xl text-brand-blue-dark md:text-5xl">Veja nossos brinquedos</h2>
+          <h2 className="mt-3 font-display text-3xl text-brand-blue-dark md:text-5xl">{galeria.title}</h2>
+          {galeria.subtitle && <p className="mt-3 text-foreground/70">{galeria.subtitle}</p>}
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[pulaPulaImg, camaElasticaImg, piscinaBolinhasImg, tobogaImg, airHockeyImg, futebolMesaImg, brinquedosInfantisImg, heroFesta].map(
