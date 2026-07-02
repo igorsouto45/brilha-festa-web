@@ -137,16 +137,6 @@ function HomePage() {
               alt="Leal Locação de Brinquedos"
               width={128}
               height={128}
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b-4 border-brand-yellow bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
-          <a href="#inicio" className="flex items-center gap-2">
-            <img
-              src={logoAsset.url}
-              alt="Leal Locação de Brinquedos"
-              width={128}
-              height={128}
               className="h-28 w-auto md:h-32"
             />
           </a>
