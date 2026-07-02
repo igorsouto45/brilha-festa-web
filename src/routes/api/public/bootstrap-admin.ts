@@ -1,5 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+async function adminFetch(path: string, init: RequestInit = {}) {
+  const url = `${process.env.SUPABASE_URL}${path}`;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const headers = new Headers(init.headers);
+  headers.set("apikey", key);
+  headers.set("Authorization", `Bearer ${key}`);
+  if (init.body && !headers.has("content-type")) headers.set("content-type", "application/json");
+  return fetch(url, { ...init, headers });
+}
+
 export const Route = createFileRoute("/api/public/bootstrap-admin")({
   server: {
     handlers: {
@@ -14,43 +24,41 @@ export const Route = createFileRoute("/api/public/bootstrap-admin")({
         }
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-        // Only run if no admin exists yet
-        const { count, error: countErr } = await supabaseAdmin
+        // Short-circuit if any admin already exists
+        const { count } = await supabaseAdmin
           .from("user_roles")
           .select("*", { count: "exact", head: true })
           .eq("role", "admin");
-        if (countErr) {
-          return new Response(JSON.stringify({ error: countErr.message }), { status: 500 });
-        }
         if ((count ?? 0) > 0) {
           return new Response(JSON.stringify({ ok: true, message: "Admin já existe." }), {
             headers: { "content-type": "application/json" },
           });
         }
 
-        // Try create user; if already exists, look them up
+        // Create user via GoTrue admin REST (works with sb_secret_* keys)
         let userId: string | null = null;
-        const created = await supabaseAdmin.auth.admin.createUser({
-          email,
-          password,
-          email_confirm: true,
+        const createRes = await adminFetch("/auth/v1/admin/users", {
+          method: "POST",
+          body: JSON.stringify({ email, password, email_confirm: true }),
         });
-        if (created.error) {
-          // fallback: find existing
-          const list = await supabaseAdmin.auth.admin.listUsers();
-          if (list.error) {
-            return new Response(JSON.stringify({ error: list.error.message }), { status: 500 });
-          }
-          const existing = list.data.users.find((u) => u.email === email);
-          if (!existing) {
-            return new Response(JSON.stringify({ error: created.error.message }), { status: 500 });
-          }
-          userId = existing.id;
+        if (createRes.ok) {
+          const j = (await createRes.json()) as { id?: string };
+          userId = j.id ?? null;
         } else {
-          userId = created.data.user?.id ?? null;
-        }
-        if (!userId) {
-          return new Response(JSON.stringify({ error: "No user id" }), { status: 500 });
+          // Might already exist — look them up
+          const listRes = await adminFetch(
+            `/auth/v1/admin/users?filter=${encodeURIComponent(email)}`,
+          );
+          if (!listRes.ok) {
+            const t = await listRes.text();
+            return new Response(JSON.stringify({ error: "list failed: " + t }), { status: 500 });
+          }
+          const listJson = (await listRes.json()) as { users?: Array<{ id: string; email: string }> };
+          userId = listJson.users?.find((u) => u.email === email)?.id ?? null;
+          if (!userId) {
+            const t = await createRes.text();
+            return new Response(JSON.stringify({ error: "create failed: " + t }), { status: 500 });
+          }
         }
 
         const { error: roleErr } = await supabaseAdmin
